@@ -1,13 +1,15 @@
-# Todo Database Agent
+# Todo & Weather Agent
 
-An AI-powered todo list assistant built with MCP (Model Context Protocol) and Google's Gemini AI.
+An AI-powered assistant built with MCP (Model Context Protocol) and Google's Gemini AI that can both manage your todos and fetch live weather information.
 
 ## Features
 
-- **Natural Language Interface**: Chat with your todo list using natural language
+- **Natural Language Interface**: Chat with your todo list and weather assistant using natural language
 - **Persistent Storage**: SQLite database for reliable todo storage
 - **Smart Date Handling**: AI assistant ensures every todo has a due date
 - **Full CRUD Operations**: Create, read, search, and delete todos
+- **Weather Tools**: Get US National Weather Service (NWS) alerts and forecasts by coordinates
+- **Multiple MCP Servers**: Single agent wired up to both `todo` and `weather` MCP servers
 - **Beautiful CLI Interface**: Clean and user-friendly command line experience
 
 ## Prerequisites
@@ -71,6 +73,16 @@ Created: 2024-01-10 10:30:00
 You: Delete todo 1
 🤖 Assistant: [Calling tool delete-todo with args {"id":1}]
 Done! I've successfully deleted the todo with ID 1 (buy groceries). Your todo list has been updated.
+
+You: What's the weather like in California?
+🤖 Assistant: [Calling tool get-alerts with args {"state":"CA"}]
+Active alerts for CA:
+...
+
+You: Give me a forecast for 37.7749, -122.4194
+🤖 Assistant: [Calling tool get-forecast with args {"latitude":37.7749,"longitude":-122.4194}]
+Forecast for 37.7749, -122.4194:
+...
 ```
 
 ## Available Commands
@@ -81,13 +93,16 @@ The AI assistant can handle these types of requests:
 - **View todos**: "Show all todos", "List my tasks", "What do I have to do?"
 - **Search todos**: "Find todos about groceries", "Search for work tasks"
 - **Delete todos**: "Delete todo 1", "Remove the grocery task"
+- **Weather alerts**: "Show weather alerts for CA", "Any weather warnings in NY?"
+- **Weather forecast**: "Forecast for 37.7749, -122.4194", "What's the forecast for these coordinates?"
 - **Exit**: "exit" or "quit"
 
 ## Architecture
 
 - **Agent** (`src/agent/index.ts`): Main chat loop and user interface
-- **MCP Client** (`src/mcp/client.ts`): Handles communication with MCP servers and Gemini AI
+- **MCP Client** (`src/mcp/client.ts`): Handles communication with multiple MCP servers and Gemini AI
 - **Todo Server** (`src/mcp/servers/todo/index.ts`): MCP server with todo management tools
+- **Weather Server** (`src/mcp/servers/weather/index.ts`): MCP server that talks to the US National Weather Service (NWS) API
 - **Database** (`src/mcp/servers/todo/db.ts`): SQLite database operations
 
 ## Scripts
@@ -112,8 +127,12 @@ The app creates a `todos.db` SQLite file in the project root to store your todos
    - Check that you're using Node.js v18 or higher
 
 3. **Connection issues**
-   - The todo server runs automatically when you start the agent
+   - The todo and weather MCP servers run automatically when you start the agent (no need to start them manually)
    - Make sure no other process is using the same ports
+
+4. **Weather API issues**
+   - The weather server uses the US National Weather Service API, which only supports US locations
+   - Make sure you have a working internet connection
 
 ## Contributing
 
