@@ -1,0 +1,27 @@
+{
+  "name": "rag-typescript",
+  "version": "1.0.0",
+  "description": "RAG System with Local Vector Database and Gemini API",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/query-rag.js",
+    "create-embeddings": "tsx src/create-embeddings.ts",
+    "query": "tsx src/query-rag.ts",
+    "inspect": "tsx src/inspect-db.ts",
+    "test": "tsx src/test.ts",
+    "db":"chroma run --path ./getting-started"
+  },
+  "dependencies": {
+    "@google/genai": "^1.13.0",
+    "chromadb": "^1.8.1",
+    "chromadb-default-embed": "^2.14.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.6.2"
+  }
+}

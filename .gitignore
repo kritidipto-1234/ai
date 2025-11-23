@@ -1,0 +1,17 @@
+.github/instructions/wmt-copilot.instructions.md
+/node_modules
+/build
+/dist
+/out
+/lib
+/obj
+/bin
+/build
+/dist
+/out
+/lib
+/obj
+/bin
+node_modules
+build/
+dist/

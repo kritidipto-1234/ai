@@ -1,0 +1,37 @@
+{
+    "name": "agentic-mcp",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "bin": {
+        "weather": "./build/index.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "start": "tsx src/agent/index.ts",
+        "dev": "tsc && node build/agent/index.js",
+        "todo-server": "node build/mcp/servers/todo/index.js",
+        "inspect": "npx -y @modelcontextprotocol/inspector node build/mcp/servers/todo/index.js"
+    },
+    "files": [
+        "build"
+    ],
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "@types/node": "^22.10.0",
+        "@types/readline-sync": "^1.4.8",
+        "@types/sqlite3": "^3.1.11",
+        "typescript": "^5.7.2"
+    },
+    "dependencies": {
+        "@google/genai": "^1.14.0",
+        "@google/generative-ai": "^0.21.0",
+        "@modelcontextprotocol/sdk": "^1.5.0",
+        "readline-sync": "^1.4.10",
+        "sqlite3": "^5.1.7",
+        "zod": "^3.23.8"
+    }
+}
