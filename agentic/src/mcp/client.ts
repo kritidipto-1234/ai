@@ -132,7 +132,7 @@ class MCPClient {
         while (true) {
             let hasFunctionCall = false;
 
-            let nextResult = result;
+            let nextResult;
             // Check if there are function calls to execute
             if (result.response.candidates?.[0]?.content?.parts) {
                 for (const part of result.response.candidates[0].content.parts) {
