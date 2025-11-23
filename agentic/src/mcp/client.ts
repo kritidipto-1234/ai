@@ -131,8 +131,8 @@ class MCPClient {
 
         while (true) {
             let hasFunctionCall = false;
+            const functionResponses: any[] = [];
 
-            let nextResult;
             // Check if there are function calls to execute
             if (result.response.candidates?.[0]?.content?.parts) {
                 for (const part of result.response.candidates[0].content.parts) {
@@ -142,6 +142,7 @@ class MCPClient {
                         const functionName = functionCall.name;
                         const functionArgs: { [x: string]: unknown } = functionCall.args as { [x: string]: unknown } || {};
 
+                        finalText.push(`[Calling tool ${functionName} with args ${JSON.stringify(functionArgs)}]`);
 
                         // Execute the MCP tool
                         try {
@@ -154,10 +155,8 @@ class MCPClient {
                                 arguments: functionArgs
                             });
 
-                            finalText.push(`[Calling tool ${functionName} with args ${JSON.stringify(functionArgs)}]`);
-
-                            // Send function result back to Gemini
-                            nextResult = await this.chat.sendMessage([{
+                            // Collect function response
+                            functionResponses.push({
                                 functionResponse: {
                                     name: functionName,
                                     response: {
@@ -166,17 +165,17 @@ class MCPClient {
                                             : toolResult.content?.toString() || 'No result'
                                     }
                                 }
-                            }]);
+                            });
                         } catch (error) {
-                            // Handle tool execution error
-                            result = await this.chat.sendMessage([{
+                            // Collect error response
+                            functionResponses.push({
                                 functionResponse: {
                                     name: functionName,
                                     response: {
                                         error: error instanceof Error ? error.message : String(error)
                                     }
                                 }
-                            }]);
+                            });
                         }
                     } else if (part.text) {
                         finalText.push(part.text);
@@ -189,7 +188,8 @@ class MCPClient {
                 break;
             }
 
-            result = nextResult;
+            // Send all function responses together in one message
+            result = await this.chat.sendMessage(functionResponses);
         }
 
         return finalText.length > 0 ? finalText.join('\n') : 'No response generated';
