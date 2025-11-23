@@ -142,7 +142,7 @@ class MCPClient {
                         const functionName = functionCall.name;
                         const functionArgs: { [x: string]: unknown } = functionCall.args as { [x: string]: unknown } || {};
 
-                        finalText.push(`🛠️ [Calling tool ${functionName} with args ${JSON.stringify(functionArgs)}]`);
+                        console.log(`🛠️ [Calling tool ${functionName} with args ${JSON.stringify(functionArgs)}]`);
 
                         // Execute the MCP tool
                         try {
